@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 20px;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0;
+}
+
+.left { display: flex; align-items: baseline; gap: 10px; }
+
+.logo {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--c-accent);
+  font-family: var(--font-mono);
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--c-text-muted);
+  letter-spacing: 0.01em;
+}
+
+.right { display: flex; align-items: center; gap: 12px; }
+
+.exportBtn {
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  background: var(--c-accent-dim);
+  color: var(--c-accent);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.exportBtn:hover { background: rgba(46,196,182,0.22); }
+
+.backLink, .ghLink {
+  font-size: 12px;
+  color: var(--c-text-muted);
+}
+.backLink:hover, .ghLink:hover { color: var(--c-text); }

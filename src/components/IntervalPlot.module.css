@@ -1,0 +1,82 @@
+.plotWrap {
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px 8px;
+  margin-bottom: 10px;
+}
+
+.plotHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.methodName {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--c-text);
+}
+
+.plotMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.metaBadge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--c-text-muted);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.metaN {
+  font-size: 11px;
+  color: var(--c-text-dim);
+}
+
+.tooltip {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  min-width: 180px;
+}
+
+.ttName {
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: 2px;
+  word-break: break-word;
+}
+
+.ttId {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--c-accent);
+  margin-bottom: 6px;
+}
+
+.ttRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+.ttRow span:last-child {
+  color: var(--c-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}

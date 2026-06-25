@@ -1,0 +1,100 @@
+/* Component styles for the embeddable qu-bounds viewer.
+   Everything is scoped under .qubounds-root so importing this package never
+   leaks globals (resets, element styles, CSS variables) into a host app. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.qubounds-root {
+  /* Light palette: warm white base, slate surfaces, teal accent */
+  --c-bg:          #f5f6f8;
+  --c-surface:     #ffffff;
+  --c-surface-2:   #f0f2f5;
+  --c-border:      #dde1e9;
+  --c-border-soft: #eaecf0;
+
+  --c-text:        #1a1d26;
+  --c-text-muted:  #5a6076;
+  --c-text-dim:    #9ba3bb;
+
+  /* Accent: teal */
+  --c-accent:      #0d9488;
+  --c-accent-dim:  rgba(13,148,136,0.10);
+
+  /* Prediction colours matching qubounds plots */
+  --c-pred:        #d97706;   /* amber: predicted point */
+  --c-covered:     #2563eb;   /* blue: true covered */
+  --c-missed:      #dc2626;   /* red: true missed / out-of-domain */
+  --c-interval:    rgba(100,116,139,0.15);
+  --c-interval-stroke: #94a3b8;
+
+  /* Domain status */
+  --c-domain-in:     #0d9488;
+  --c-domain-border: #d97706;
+  --c-domain-out:    #dc2626;
+
+  --radius:   6px;
+  --radius-lg: 10px;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:    0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+
+  height: 100%;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.qubounds-root *,
+.qubounds-root *::before,
+.qubounds-root *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.qubounds-root a { color: var(--c-accent); text-decoration: none; }
+.qubounds-root a:hover { text-decoration: underline; }
+
+.qubounds-root button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.qubounds-root input,
+.qubounds-root select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  color: var(--c-text);
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.qubounds-root input:focus,
+.qubounds-root select:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px var(--c-accent-dim);
+}
+
+.qubounds-root ::-webkit-scrollbar { width: 6px; height: 6px; }
+.qubounds-root ::-webkit-scrollbar-track { background: var(--c-bg); }
+.qubounds-root ::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 3px; }
+.qubounds-root ::-webkit-scrollbar-thumb:hover { background: var(--c-text-dim); }
+
+.qubounds-root .tag {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.qubounds-root .tag-platform   { background: var(--c-accent-dim); color: var(--c-accent); }
+.qubounds-root .tag-in         { background: rgba(13,148,136,0.10); color: var(--c-domain-in); }
+.qubounds-root .tag-borderline { background: rgba(217,119,6,0.12);  color: var(--c-domain-border); }
+.qubounds-root .tag-out        { background: rgba(220,38,38,0.10);  color: var(--c-domain-out); }
+.qubounds-root .tag-singleton  { background: rgba(37,99,235,0.10);  color: var(--c-covered); }

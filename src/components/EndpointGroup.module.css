@@ -1,0 +1,72 @@
+.group {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--c-surface);
+  text-align: left;
+  transition: background 0.15s;
+}
+.header:hover { background: var(--c-surface-2); }
+
+.arrow { font-size: 11px; color: var(--c-text-muted); flex-shrink: 0; }
+
+.epLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text);
+  flex: 1;
+}
+
+.meta {
+  font-size: 11px;
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}
+
+.plots {
+  padding: 12px 16px;
+  background: var(--c-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plotRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plotMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+}
+
+.h5btn {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.h5btn:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+  text-decoration: none;
+}

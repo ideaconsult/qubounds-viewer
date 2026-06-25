@@ -1,0 +1,39 @@
+{
+  "name": "@adma/qubounds-viewer",
+  "version": "0.1.0",
+  "description": "Embeddable React viewer for conformal prediction intervals (qu-bounds).",
+  "private": true,
+  "type": "module",
+  "files": ["dist"],
+  "main": "./dist/qubounds-viewer.js",
+  "module": "./dist/qubounds-viewer.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qubounds-viewer.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "sideEffects": ["**/*.css"],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.lib.config.js",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.4"
+  }
+}
