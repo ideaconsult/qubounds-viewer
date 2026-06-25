@@ -6,7 +6,7 @@ _For Claude Code. This document captures all design decisions, architecture, dat
 
 ## Project Overview
 
-**qu-bounds UI** is a standalone React/Vite app for visualising conformal prediction intervals produced by the [qubounds](https://github.com/ideaconsult/qubounds) Python package. It lives at `D:\nina\src\git_idea\qubounds_clean\ui\` and deploys to `qubounds.adma.ai` (or as a sub-path `/qubounds/`).
+**qu-bounds UI** is a standalone React/Vite app for visualising conformal prediction intervals produced by the [qubounds](https://github.com/ideaconsult/qubounds) Python package.
 
 It is part of the **adma.ai** ecosystem alongside:
 
