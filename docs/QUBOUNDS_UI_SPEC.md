@@ -36,10 +36,8 @@ Dependencies in `package.json`:
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
-  "dependencies": {
-    "recharts": "^2.12.7"
-  },
   "devDependencies": {
+    "recharts": "^2.12.7",
     "vite": "^5.3.4",
     "vitest": "^4.1.9"
   }

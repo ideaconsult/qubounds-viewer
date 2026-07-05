@@ -11,7 +11,7 @@
 - This is a single-package React/Vite project that is both a standalone `/qubounds/` app and an embeddable viewer library.
 - Standalone app entrypoint: `src/main.jsx` -> `src/App.jsx` -> `PredictionViewer`.
 - Library entrypoint: `src/index.js`, exporting `PredictionViewer` and expecting consumers to import the bundled CSS.
-- The intended public npm package name is `@ideaconsult/qubounds-viewer`; older/local prototypes may still mention `@adma/qubounds-viewer`.
+- The public npm package name is `@ideaconsult/qubounds-viewer`; older/local prototypes may still mention `@adma/qubounds-viewer`.
 - `src/PredictionViewer.jsx` owns the reusable component API; avoid putting host-specific URL parsing there.
 
 ## Commands
@@ -28,8 +28,8 @@
 
 - `vite.config.js` sets `base: '/qubounds/'` and proxies `/db` to `http://127.0.0.1:8000` plus `/api` to `http://localhost:8080` for development.
 - `vite.lib.config.js` externalizes `react`, `react-dom`, and `react/jsx-runtime`; keep React as a peer dependency for embedded consumers.
-- Recharts is currently bundled into the library build so consumers only need React/ReactDOM plus the viewer package.
-- Before publishing, `package.json` must use the intended package name, no longer be `private`, and have lockfile metadata reconciled.
+- Recharts is bundled into the library build, so consumers only need React/ReactDOM plus the viewer package.
+- Keep `package.json`, lockfile metadata, npm package name, and publish settings in sync before releases.
 - Do not commit generated `dist/` unless a release workflow explicitly requires checked-in artifacts.
 
 ## Auth And Backend Contract
