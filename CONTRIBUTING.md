@@ -2,7 +2,7 @@
 
 qu-bounds Viewer is a React/Vite frontend for visualizing conformal prediction intervals and prediction sets. The repository serves two outputs from one codebase: a standalone app deployed under `/qubounds/` and an embeddable React component for host applications.
 
-The intended public package name is `@ideaconsult/qubounds-viewer` under the `ideaconsult` npm organization. Older/local prototypes may still refer to `@adma/qubounds-viewer`; do not use that as the long-term package name.
+The public package name is `@ideaconsult/qubounds-viewer` under the `ideaconsult` npm organization. Older/local prototypes may still refer to `@adma/qubounds-viewer`; do not use that as the long-term package name.
 
 ## Development Workflow
 
@@ -68,7 +68,7 @@ There are currently no configured lint, formatter, or typecheck scripts. For cod
 
 ## Embedding Contract
 
-Consumers should eventually depend on the npm package and import the component and CSS:
+Consumers should depend on the npm package and import the component and CSS:
 
 ```jsx
 import PredictionViewer from "@ideaconsult/qubounds-viewer";
@@ -89,13 +89,11 @@ Keep React and ReactDOM as peer dependencies. The library build currently bundle
 
 ## Publishing
 
-Before the first npm release:
+Before npm releases:
 
-1. Rename the package in `package.json` to `@ideaconsult/qubounds-viewer`.
-2. Remove `private: true`.
-3. Reconcile the lockfile with `package.json`.
-4. Run `npm run build` and `npm run build:lib`.
-5. Verify the package contents include the library bundle, CSS, and any files needed by consumers.
+1. Reconcile the lockfile with `package.json`.
+2. Run `npm test`, `npm run build`, and `npm run build:lib`.
+3. Verify the package contents include the library bundle, CSS, and any files needed by consumers.
 
 Local `file:` dependencies are acceptable only for development while iterating across repositories. They are not a release or CI distribution strategy.
 

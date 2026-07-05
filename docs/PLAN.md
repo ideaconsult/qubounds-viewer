@@ -2,7 +2,7 @@
 
 ## Auth design (correct as-is)
 
-`@adma/qubounds-viewer` is a pure React component library. The host app (spectrasearch-viewers) owns authentication and passes a Bearer token as a prop:
+`@ideaconsult/qubounds-viewer` is a pure React component library. The host app owns authentication and passes a Bearer token as a prop:
 
 ```jsx
 <PredictionViewer token={token} apiBase={apiBase} ... />

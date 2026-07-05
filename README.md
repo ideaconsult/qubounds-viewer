@@ -6,7 +6,7 @@ The primary target is an embeddable React component. The same component also pow
 
 ## Embedding
 
-The intended public package name is `@ideaconsult/qubounds-viewer`. Until publication, local prototypes may still use the older `@adma/qubounds-viewer` name.
+The public package name is `@ideaconsult/qubounds-viewer`. Older local prototypes may still use the previous `@adma/qubounds-viewer` name.
 
 ```jsx
 import PredictionViewer from '@ideaconsult/qubounds-viewer'
