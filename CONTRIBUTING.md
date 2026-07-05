@@ -21,7 +21,7 @@ npm install
 Create local environment configuration when needed:
 
 ```sh
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 Start the standalone app:
@@ -33,6 +33,18 @@ npm run dev
 The dev server uses Vite on port `5174` and serves the app with base path `/qubounds/`.
 
 ## Build And Verification
+
+Run the test suite:
+
+```sh
+npm test
+```
+
+Run tests in watch mode while developing:
+
+```sh
+npm run test:watch
+```
 
 Build the standalone app:
 
@@ -52,7 +64,7 @@ Preview a production app build:
 npm run preview
 ```
 
-There are currently no configured test, lint, formatter, or typecheck scripts. For code changes, run the relevant build command and document any checks that are unavailable or skipped.
+There are currently no configured lint, formatter, or typecheck scripts. For code changes, run `npm test` and the relevant build command, then document any checks that are unavailable or skipped.
 
 ## Embedding Contract
 
@@ -89,12 +101,12 @@ Local `file:` dependencies are acceptable only for development while iterating a
 
 ## Tooling Direction
 
-This repository currently uses npm and has no lint/format/test toolchain. A future tooling migration should be done deliberately, preferably in its own change, with updated docs and lockfile changes.
+This repository currently uses npm and has no lint or format toolchain. A future tooling migration should be done deliberately, preferably in its own change, with updated docs and lockfile changes.
 
 pnpm, Biome, and Lefthook would be reasonable choices for consistency with related frontend projects, but do not mix that migration into unrelated feature work.
 
 ## Documentation Maintenance
 
 - Update `AGENTS.md` and this file when install commands, scripts, verification steps, packaging, release flow, backend routes, auth behavior, or integration contracts change.
-- Update `QUBOUNDS_UI_SPEC.md` when changing UI behavior, data contracts, URL params, environment variables, architecture, or integration assumptions.
-- Treat `QUBOUNDS_UI_SPEC.md` as valuable context, not an executable source of truth; reconcile it with source code when they differ.
+- Update `docs/QUBOUNDS_UI_SPEC.md` when changing UI behavior, data contracts, URL params, environment variables, architecture, or integration assumptions.
+- Treat `docs/QUBOUNDS_UI_SPEC.md` as valuable context, not an executable source of truth; reconcile it with source code when they differ.

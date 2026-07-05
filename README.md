@@ -1,20 +1,41 @@
 # qu-bounds UI
 
-React/Vite frontend for exploring conformal prediction intervals from the [qubounds](https://github.com/ideaconsult/qubounds) package.
+React/Vite viewer for exploring conformal prediction intervals and prediction sets from the [qubounds](https://github.com/ideaconsult/qubounds) package.
 
-## Integration
+The primary target is an embeddable React component. The same component also powers a standalone `/qubounds/` app for development, demos, and direct links.
 
-Same deployment pattern as h5web in nambit/spectrasearch:
+## Embedding
+
+The intended public package name is `@ideaconsult/qubounds-viewer`. Until publication, local prototypes may still use the older `@adma/qubounds-viewer` name.
+
+```jsx
+import PredictionViewer from '@ideaconsult/qubounds-viewer'
+import '@ideaconsult/qubounds-viewer/style.css'
+
+<PredictionViewer
+  items={['prediction-item-id']}
+  type="prediction"
+  dataSource="predictions"
+  token={token}
+  apiBase="https://nambit.adma.ai/api"
+/>
+```
+
+Hosts own authentication and pass a bearer token with the `token` prop when protected resources are needed. The viewer never starts login or redirect flow.
+
+## Standalone App
+
+The standalone app follows the same deployment pattern as h5web in nambit/spectrasearch:
 - Deep-linked from nambit chemical cards: `?compound=DTXSID0020585&back=https://nambit.adma.ai`
 - Usable standalone: paste any CAS, DTXSID, SMILES, or InChIKey
 - Multi-compound comparison: `?compound=DTXSID001&compound=DTXSID002`
-- Shares Keycloak realm with nambit — no separate login
+- Passive auth only: standalone mode can receive `?token=`, `sessionStorage`, or `postMessage`
 
 ## Setup
 
 ```bash
-cp .env.example .env.local
-# fill in Keycloak + API endpoints
+cp .env.example .env
+# fill in backend and HSDS endpoints if needed
 
 npm install
 npm run dev
@@ -26,15 +47,14 @@ See `.env.example`. Key ones:
 
 | Variable | Purpose |
 |---|---|
-| `VITE_KEYCLOAK_URL` | Keycloak server URL |
-| `VITE_KEYCLOAK_REALM` | Realm (shared with nambit) |
-| `VITE_KEYCLOAK_CLIENT` | Client ID for this app |
-| `VITE_API_URL` | Backend base (structure depiction, proxy) |
-| `VITE_SOLR_URL` | Solr base via proxy |
-| `VITE_PREDICTIONS_CORE` | Predictions Solr collection name |
-| `VITE_CHEMICALS_CORE` | Chemicals Solr collection name |
+| `VITE_API_URL` | ramanchada/nambit backend base |
+| `VITE_PREDICTIONS_CORE` | Predictions data source/collection name |
+| `VITE_CHEMICALS_CORE` | Chemicals data source/collection name |
+| `VITE_SUBJECT_FIELD` | Subject join field; defaults to `dsstox_id_s` |
 | `VITE_HSDS_URL` | HSDS server (for h5web deep links) |
 | `VITE_HSDS_DOMAIN` | HSDS domain path for model .nxs files |
+
+Backend calls use `/db/query` and `/db/download` routes through `VITE_API_URL`, not raw Solr endpoints.
 
 ## Solr field conventions (predictions collection)
 
@@ -74,4 +94,17 @@ Each model row has an `h5` button linking to the corresponding `.nxs` calibratio
 ```bash
 npm run build
 # dist/ is served under /qubounds/ (see vite.config.js base)
+```
+
+Build the embeddable library:
+
+```bash
+npm run build:lib
+# dist/qubounds-viewer.js and dist/style.css are the package artifacts
+```
+
+Run tests:
+
+```bash
+npm test
 ```
