@@ -1,6 +1,6 @@
 # qu-bounds UI — Development Specification
 
-_For Claude Code. This document captures all design decisions, architecture, data contracts, and current code state so development can continue without context loss._
+_This document captures design decisions, architecture, data contracts, and current code state so development can continue without context loss. Verify claims against executable source before relying on them._
 
 ---
 
@@ -24,7 +24,7 @@ The deployment model mirrors h5web exactly: **nambit links out to qu-bounds UI**
 |---|---|
 | Framework | React 18 + Vite 5 |
 | Charting | Recharts 2 |
-| Auth | Keycloak (passive — token received, never initiated) |
+| Auth | Passive bearer-token handling — token received, never initiated |
 | Styling | CSS Modules + CSS custom properties |
 | Build base path | `/qubounds/` |
 | Dev port | 5174 |
@@ -32,13 +32,16 @@ The deployment model mirrors h5web exactly: **nambit links out to qu-bounds UI**
 Dependencies in `package.json`:
 ```json
 {
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "recharts": "^2.12.7"
   },
-  "optionalDependencies": {
-    "keycloak-js": "^25.0.0"
+  "devDependencies": {
+    "vite": "^5.3.4",
+    "vitest": "^4.1.9"
   }
 }
 ```
@@ -47,17 +50,16 @@ Dependencies in `package.json`:
 
 ## Authentication — Critical Constraint
 
-**The app NEVER initiates a Keycloak login or redirect.** It is a viewer, not an auth entry point.
+**The viewer NEVER initiates a login or redirect.** It is a viewer, not an auth entry point.
 
 Token receipt priority order (`src/context/AuthContext.jsx`):
 1. URL param `?token=...` (nambit passes it here, same as h5web) — stripped from URL after reading and cached in `sessionStorage`
 2. `sessionStorage` — from a prior navigation in the same tab
 3. `window.postMessage` — if embedded as an iframe, parent posts `{ type: 'keycloak_token', token: '...' }`
 
-If no token is present, **the app renders normally**. Public Solr resources (chemical search, predictions) work without auth. Only structure depiction (backend API call) requires a token and degrades gracefully (no image shown) when absent.
+If no token is present, **the app renders normally**. Public backend resources should work without auth, while protected image/data requests degrade gracefully.
 
 ```jsx
-// AuthContext.jsx — simplified
 const token = readFromUrlOrSession()  // never call keycloak.init()
 ```
 
@@ -103,25 +105,27 @@ const token = readFromUrlOrSession()  // never call keycloak.init()
 
 ### API access pattern
 
-The app does **not** talk to raw Solr directly. All requests go through the **nambit/ramanchada-api backend** which proxies Solr and provides structure depiction. The exact API endpoint patterns need to be confirmed against the live backend — see `VITE_API_URL` and `VITE_SOLR_URL` in `.env.example`.
+The app does **not** talk to raw Solr directly. All requests go through the **nambit/ramanchada-api backend**.
 
-**TODO for Claude Code**: Inspect the actual API URLs used by spectrasearch/nambit frontend (browser network tab or source) and update `src/hooks/useSolr.js` fetch calls accordingly. The current code assumes Solr-style `select?q=...&fq=...&wt=json` — this may need to be replaced with the AMBIT API pattern.
+Current route pattern in `src/hooks/useSolr.js`:
+
+- `/db/query` resolves subject compounds to prediction item ids.
+- `/db/download?what=json` fetches prediction/model documents.
+- `/db/download?what=thumbnail` fetches structure thumbnails.
 
 Use local  FastAPI running at http://127.0.0.1:8000/docs
 
 
 ### Structure depiction
 
-`GET {VITE_API_URL}/structure?smiles={encoded_smiles}&w=200&h=160&token={token}`
-
-Returns an image. The backend (ramanchada-api) handles this. Token is appended as query param — same pattern nambit uses for embedded images.
+Structure thumbnails use `/db/download?what=thumbnail&extra=chemical&data_source={VITE_CHEMICALS_CORE}`. Token is appended only when available.
 
 ### HSDS / h5web links
 
 Each model links out to its `.nxs` calibration file in HSDS:
 `{VITE_HSDS_URL}/?file={VITE_HSDS_DOMAIN}/{method}.nxs`
 
-The h5web viewer opens directly — no auth negotiation needed (h5web handles it separately with the same Keycloak token passed via URL).
+The h5web viewer opens directly; auth handling is owned by the host/deployment.
 
 ---
 
@@ -151,18 +155,23 @@ Human-readable labels and endpoint code → display name mappings live in `src/u
 
 ## URL Parameters
 
-The app reads these on load:
+`src/App.jsx` reads these standalone app parameters on load:
 
 | Param | Example | Meaning |
 |---|---|---|
+| `item` | `?item=prediction-id` | Single or multiple prediction item ids (repeatable) |
 | `compound` | `?compound=DTXSID0020585` | Single or multiple DTXSID (repeatable) |
-| `smiles` | `?smiles=CCO` | SMILES-based lookup |
-| `token` | `?token=eyJ...` | Keycloak access token (from nambit) |
+| `subject_field` | `?subject_field=dsstox_id_s` | Field used to resolve subjects to prediction items |
+| `ssbd` | `?ssbd=Acute_aquatic_toxicity` | SSbD group filter (repeatable) |
+| `endpoint` | `?endpoint=EC_FISHTOX_SECTION` | Endpoint category filter (repeatable) |
+| `model` | `?model=FATHEAD_EPA` | Model/method filter (repeatable) |
+| `data_source` | `?data_source=predictions` | Prediction data source/collection |
+| `type` | `?type=prediction` | Extra document type to request |
 | `back` | `?back=https://nambit.adma.ai` | Return link shown in header |
-| `confidence` | `?confidence=0.90` | Pre-select confidence level |
-| `endpoint` | `?endpoint=aquatic_toxicity` | Pre-filter endpoint groups |
 
-Multi-compound from nambit: `?compound=DTXSID001&compound=DTXSID002&token=eyJ...&back=https://nambit.adma.ai`
+`token` is handled separately by `AuthContext`: URL `?token=`, then `sessionStorage`, then `postMessage`.
+
+Multi-compound example: `?compound=DTXSID001&compound=DTXSID002&back=https://nambit.adma.ai`
 
 ---
 
@@ -212,15 +221,15 @@ ui/
     ├── App.jsx                          # Root: URL params, state, layout
     ├── App.module.css
     ├── index.css                        # CSS vars (LIGHT theme), global styles
-    ├── keycloak.js                      # Keycloak instance (NOT initialised)
     ├── context/
     │   └── AuthContext.jsx              # Passive token receipt
     ├── hooks/
-    │   └── useSolr.js                   # useCompoundSearch, usePredictions, structureUrl
+    │   └── useSolr.js                   # usePredictionItems, useModelRegistry, useStructureUrl
     ├── utils/
     │   ├── modelRegistry.js             # SSbD/endpoint labels, parseMethodPredictions, groupPredictions
     │   ├── buildPredictionTree.js       # Transforms Solr docs → plot-ready tree
     │   └── exportCSV.js                 # CSV export
+    ├── tests/                           # Vitest unit tests
     └── components/
         ├── Header.jsx / .module.css
         ├── CompoundInput.jsx / .module.css   # Search + file upload + chips
@@ -292,16 +301,10 @@ Fonts: Inter (body) + JetBrains Mono (identifiers, badges, numeric values).
 ## Environment Variables
 
 ```bash
-# .env.local (copy from .env.example)
-
-VITE_KEYCLOAK_URL=https://auth.adma.ai
-VITE_KEYCLOAK_REALM=adma
-VITE_KEYCLOAK_CLIENT=qubounds   # or reuse nambit client
-
 VITE_API_URL=https://nambit.adma.ai/api    # backend base
-VITE_SOLR_URL=/api/solr                    # Solr proxy path (via backend)
 VITE_PREDICTIONS_CORE=predictions
 VITE_CHEMICALS_CORE=chemicals
+VITE_SUBJECT_FIELD=dsstox_id_s
 
 VITE_HSDS_URL=https://hsds.adma.ai
 VITE_HSDS_DOMAIN=/qubounds                 # HSDS domain for .nxs files
@@ -311,19 +314,13 @@ VITE_HSDS_DOMAIN=/qubounds                 # HSDS domain for .nxs files
 
 ## Known TODOs / Open Questions
 
-1. **API endpoint pattern**: `useSolr.js` currently uses raw Solr `select?q=...` syntax. Confirm the actual URL pattern the nambit backend exposes and update accordingly. Check `spectrasearch` source or network tab on `nambit.adma.ai`.
+1. **Confidence levels**: The UI currently exposes only 90% confidence; add more levels only when backend fields/data exist.
 
-2. **Confidence level field**: The predictions Solr collection currently stores one fixed confidence level (90%). The `confidence_level_d` filter in `usePredictions` should be disabled until multiple levels are stored. Remove the `fqParts.push(...)` line for now.
+2. **Classification fields**: Current code expects `{method}_set90_ss` and `{method}_set_size90_i` for classification prediction sets. Confirm backend field names when new classification datasets are added.
 
-3. **Classification fields**: `{method}_pred_set_s`, `{method}_set_size_i` are specified but may not yet be in the Solr schema. `load_predictions_parquet.py` only handles regression currently. Confirm field names when classification is added.
+3. **`guidance_s` vs platform**: Currently `guidance_s` may be used as a fallback software/platform badge when model metadata is absent. Verify this is still appropriate as backend metadata evolves.
 
-4. **Structure depiction URL**: Confirm the exact endpoint pattern from ramanchada-api. Current assumption: `GET /structure?smiles=...&w=200&h=160`. May require auth header instead of token query param.
-
-5. **`guidance_s` vs platform**: Currently `guidance_s` stores the software name (`VEGA`). Verify this is the right field to use as the platform badge, vs adding a separate `platform_s` field.
-
-6. **Recharts ErrorBar for classification**: The grey bar spanning the prediction set is implemented using `ErrorBar` on a zero-width Scatter point. This may need adjustment — consider using custom SVG shapes in Recharts if the bar thickness looks wrong.
-
-7. **Keycloak client**: Either register `qubounds` as a new client in the `adma` Keycloak realm, or reuse the nambit/spectrasearch client ID. Update `VITE_KEYCLOAK_CLIENT` accordingly.
+4. **Recharts ErrorBar for classification**: The grey bar spanning the prediction set is implemented using `ErrorBar` on a zero-width Scatter point. This may need adjustment — consider using custom SVG shapes in Recharts if the bar thickness looks wrong.
 
 ---
 
@@ -331,11 +328,12 @@ VITE_HSDS_DOMAIN=/qubounds                 # HSDS domain for .nxs files
 
 ```bash
 cd D:\nina\src\git_idea\qubounds_clean\ui
-cp .env.example .env.local
-# edit .env.local with actual URLs
+cp .env.example .env
+# edit .env with actual URLs
 
 npm install
 npm run dev       # http://localhost:5174/qubounds/
+npm test          # one-shot Vitest suite
 
 # Test with a known DTXSID:
 # http://localhost:5174/qubounds/?compound=DTXSID0020585
