@@ -116,7 +116,7 @@ Use local  FastAPI running at http://127.0.0.1:8000/docs
 
 ### Structure depiction
 
-Structure thumbnails use `/db/download?what=thumbnail&extra=chemical&data_source={VITE_CHEMICALS_CORE}`. Token is appended only when available.
+Structure thumbnails use `/db/download?what=thumbnail&extra=chemical&data_source={chemicalsCore}`. Token is appended only when available.
 
 ### HSDS / h5web links
 
@@ -301,7 +301,7 @@ Fonts: Inter (body) + JetBrains Mono (identifiers, badges, numeric values).
 ```bash
 VITE_API_URL=https://nambit.adma.ai/api    # backend base
 VITE_PREDICTIONS_CORE=predictions
-VITE_CHEMICALS_CORE=chemicals
+VITE_CHEMICALS_CORE=dsstox
 VITE_SUBJECT_FIELD=dsstox_id_s
 
 VITE_HSDS_URL=https://hsds.adma.ai

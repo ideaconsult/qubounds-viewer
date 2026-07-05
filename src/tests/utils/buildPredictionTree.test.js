@@ -124,6 +124,14 @@ describe('buildPredictionTree', () => {
     expect(entry.hsdsUrl).toContain('/mydata/MODEL_A.nxs')
   })
 
+  it('uses explicit package HSDS defaults when no hsds param is provided', () => {
+    const docs = [makeRegressionDoc('CID1')]
+    const tree = buildPredictionTree(compounds, docs)
+    const [entry] = tree['Acute_aquatic_toxicity']['EC_FISHTOX']
+
+    expect(entry.hsdsUrl).toBe('https://hsds.adma.ai/?file=/qubounds/MODEL_A.nxs')
+  })
+
   it('registry metadata is applied to matching method', () => {
     const docs = [makeRegressionDoc('CID1')]
     const registry = new Map([

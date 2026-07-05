@@ -127,7 +127,7 @@ function ViewerBody({
 //                     token={kcToken} apiBase="https://api…" />
 // Auth: `token` (when provided) is owned by the host; omitted ⇒ standalone reads
 // the URL/sessionStorage. Config: apiBase/chemicalsCore/predictionsCore/subjectField/hsds
-// override the build-time env defaults.
+// override the package defaults.
 export default function PredictionViewer({
   token, apiBase, chemicalsCore, predictionsCore, subjectField, hsds, ...body
 }) {
