@@ -24,6 +24,13 @@
 - Test suite: `pnpm test`; watch mode: `pnpm test:watch`.
 - There are currently no lint, formatter, or typecheck scripts; use `pnpm test` plus the relevant build command as the available verification step for code changes.
 
+## CI And Release
+
+- GitHub Actions workflows live under `.github/workflows/`; Dependabot configuration is `.github/dependabot.yml`.
+- CI runs on pull requests, pushes to `main`, and manual dispatch. It installs with `pnpm install --frozen-lockfile`, checks peers, runs tests, builds the standalone app and library, verifies no `import.meta.env`/`VITE_` references leak into `dist/*.js`, and runs `pnpm pack --dry-run`.
+- npm publication is handled by `.github/workflows/publish.yml` on GitHub Release publication, after npm trusted publishing is configured for workflow `publish.yml` and GitHub environment `npm`.
+- Release tags must match `package.json` exactly as `vX.Y.Z`.
+
 ## Vite And Packaging
 
 - `vite.config.js` sets `base: '/qubounds/'` and proxies `/db` to `http://127.0.0.1:8000` plus `/api` to `http://localhost:8080` for development.

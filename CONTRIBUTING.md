@@ -171,11 +171,29 @@ Keep React and ReactDOM as peer dependencies. The library build currently bundle
 
 ## Publishing
 
-Before npm releases:
+Before any npm release:
 
 1. Reconcile the lockfile with `package.json`.
-2. Run `pnpm test`, `pnpm build`, and `pnpm build:lib`.
-3. Verify the package contents include the library bundle, CSS, and any files needed by consumers.
+2. Run `pnpm install --frozen-lockfile`, `pnpm peers check`, `pnpm test`, `pnpm build`, and `pnpm build:lib`.
+3. Verify the package contents with `pnpm pack --dry-run`.
+4. Verify `dist/qubounds-viewer.js` has no `import.meta.env` or `VITE_` references.
+
+Configure npm trusted publishing for releases:
+
+1. In npmjs.com, open `@ideaconsult/qubounds-viewer` package settings.
+2. Add a GitHub Actions trusted publisher for repository `ideaconsult/qubounds-viewer`.
+3. Use workflow filename `publish.yml` and environment name `npm`.
+4. Allow `npm publish`.
+5. In GitHub repository settings, create the `npm` environment and require reviewer approval.
+6. After the trusted publisher works, require 2FA for package publishing/settings and disallow traditional publish tokens if available.
+
+For releases after trusted publishing is configured:
+
+1. Update `package.json` version in a normal pull request.
+2. Merge after CI passes.
+3. Tag the merge commit as `vX.Y.Z`, matching `package.json` exactly.
+4. Create and publish a GitHub Release from that tag.
+5. The `Publish to npm` workflow validates the tag, rebuilds the package, and publishes to npm via OIDC trusted publishing.
 
 Local `file:` dependencies are acceptable only for development while iterating across repositories. They are not a release or CI distribution strategy.
 
