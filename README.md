@@ -37,8 +37,8 @@ The standalone app follows the same deployment pattern as h5web in nambit/spectr
 cp .env.example .env
 # fill in backend and HSDS endpoints if needed
 
-npm install
-npm run dev
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 ## Environment variables
@@ -92,19 +92,19 @@ Each model row has an `h5` button linking to the corresponding `.nxs` calibratio
 ## Building for production
 
 ```bash
-npm run build
+pnpm build
 # dist/ is served under /qubounds/ (see vite.config.js base)
 ```
 
 Build the embeddable library:
 
 ```bash
-npm run build:lib
+pnpm build:lib
 # dist/qubounds-viewer.js and dist/style.css are the package artifacts
 ```
 
 Run tests:
 
 ```bash
-npm test
+pnpm test
 ```
