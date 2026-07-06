@@ -178,16 +178,9 @@ Before any npm release:
 3. Verify the package contents with `pnpm pack --dry-run`.
 4. Verify `dist/qubounds-viewer.js` has no `import.meta.env` or `VITE_` references.
 
-Configure npm trusted publishing for releases:
+npm publication is handled by `.github/workflows/publish.yml` using npm trusted publishing/OIDC and the GitHub `npm` environment. Releases do not use long-lived npm publish tokens.
 
-1. In npmjs.com, open `@ideaconsult/qubounds-viewer` package settings.
-2. Add a GitHub Actions trusted publisher for repository `ideaconsult/qubounds-viewer`.
-3. Use workflow filename `publish.yml` and environment name `npm`.
-4. Allow `npm publish`.
-5. In GitHub repository settings, create the `npm` environment and require reviewer approval.
-6. After the trusted publisher works, require 2FA for package publishing/settings and disallow traditional publish tokens if available.
-
-For releases after trusted publishing is configured:
+For releases:
 
 1. Update `package.json` version in a normal pull request.
 2. Merge after CI passes.
