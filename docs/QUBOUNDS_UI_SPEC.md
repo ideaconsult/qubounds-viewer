@@ -329,9 +329,9 @@ cd D:\nina\src\git_idea\qubounds_clean\ui
 cp .env.example .env
 # edit .env with actual URLs
 
-npm install
-npm run dev       # http://localhost:5174/qubounds/
-npm test          # one-shot Vitest suite
+pnpm install --frozen-lockfile
+pnpm dev       # http://localhost:5174/qubounds/
+pnpm test      # one-shot Vitest suite
 
 # Test with a known DTXSID:
 # http://localhost:5174/qubounds/?compound=DTXSID0020585

@@ -23,7 +23,7 @@ Removed dead code that referenced Keycloak without ever using it:
 | `VITE_KEYCLOAK_*` in `.env.example` | Only referenced `keycloak.js` |
 | `VITE_KEYCLOAK_*` in `.env.local` | Same |
 
-`keycloak-js` was not in `package.json` dependencies and will drop from the lock file on next `npm install`.
+`keycloak-js` was not in `package.json` dependencies and dropped from the lockfile on dependency refresh.
 
 ## Test suite
 
@@ -44,8 +44,8 @@ vitest.config.js
 
 Run:
 ```bash
-npm test          # vitest run (one-shot)
-npm run test:watch  # vitest watch
+pnpm test          # vitest run (one-shot)
+pnpm test:watch    # vitest watch
 ```
 
 ### Coverage rationale

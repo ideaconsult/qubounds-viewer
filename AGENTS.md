@@ -2,7 +2,7 @@
 
 ## Sources
 
-- Prefer `package.json`, `package-lock.json`, `vite.config.js`, `vite.lib.config.js`, `vitest.config.js`, `.env.example`, `README.md`, and `docs/QUBOUNDS_UI_SPEC.md` for current behavior.
+- Prefer `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `vite.config.js`, `vite.lib.config.js`, `vitest.config.js`, `.env.example`, `README.md`, and `docs/QUBOUNDS_UI_SPEC.md` for current behavior.
 - `docs/QUBOUNDS_UI_SPEC.md` captures important architecture, UI, and data-contract context, but parts may lag source; verify claims against executable code before relying on them.
 - Keep this file, `CONTRIBUTING.md`, and `docs/QUBOUNDS_UI_SPEC.md` updated when commands, entrypoints, API routes, URL params, data fields, auth behavior, packaging, or integration assumptions change.
 
@@ -16,13 +16,13 @@
 
 ## Commands
 
-- Current package manager is npm: install with `npm install`.
-- Dev server: `npm run dev`; Vite serves on port `5174` with `base: '/qubounds/'`.
-- Production app build: `npm run build`.
-- Library build for package consumers: `npm run build:lib`; it emits `dist/qubounds-viewer.js` and `dist/style.css`.
-- Preview production app build: `npm run preview`.
-- Test suite: `npm test`; watch mode: `npm run test:watch`.
-- There are currently no lint, formatter, or typecheck scripts; use `npm test` plus the relevant build command as the available verification step for code changes.
+- Current package manager is pnpm, pinned by `packageManager` in `package.json`; install with `pnpm install --frozen-lockfile`.
+- Dev server: `pnpm dev`; Vite serves on port `5174` with `base: '/qubounds/'`.
+- Production app build: `pnpm build`.
+- Library build for package consumers: `pnpm build:lib`; it emits `dist/qubounds-viewer.js` and `dist/style.css`.
+- Preview production app build: `pnpm preview`.
+- Test suite: `pnpm test`; watch mode: `pnpm test:watch`.
+- There are currently no lint, formatter, or typecheck scripts; use `pnpm test` plus the relevant build command as the available verification step for code changes.
 
 ## Vite And Packaging
 

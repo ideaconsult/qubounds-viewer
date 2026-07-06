@@ -1,6 +1,7 @@
 {
   "name": "@ideaconsult/qubounds-viewer",
   "version": "0.1.0",
+  "packageManager": "pnpm@11.10.0",
   "description": "Embeddable React viewer for conformal prediction intervals (qu-bounds).",
   "license": "Apache-2.0",
   "type": "module",
@@ -40,7 +41,7 @@
     "build": "vite build",
     "build:lib": "vite build --config vite.lib.config.js",
     "preview": "vite preview",
-    "prepublishOnly": "npm test && npm run build:lib",
+    "prepublishOnly": "pnpm test && pnpm build:lib",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -59,6 +60,6 @@
     "react-dom": "^18.3.1",
     "recharts": "^2.12.7",
     "vite": "^5.3.4",
-    "vitest": "^4.1.9"
+    "vitest": "^3.2.4"
   }
 }
