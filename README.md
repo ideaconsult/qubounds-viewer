@@ -49,12 +49,12 @@ See `.env.example`. Key ones:
 |---|---|
 | `VITE_API_URL` | ramanchada/nambit backend base |
 | `VITE_PREDICTIONS_CORE` | Predictions data source/collection name |
-| `VITE_CHEMICALS_CORE` | Chemicals data source/collection name |
+| `VITE_CHEMICALS_CORE` | Chemicals data source/collection name; default template uses `dsstox` |
 | `VITE_SUBJECT_FIELD` | Subject join field; defaults to `dsstox_id_s` |
 | `VITE_HSDS_URL` | HSDS server (for h5web deep links) |
 | `VITE_HSDS_DOMAIN` | HSDS domain path for model .nxs files |
 
-Backend calls use `/db/query` and `/db/download` routes through `VITE_API_URL`, not raw Solr endpoints.
+Backend calls use `/db/query` and `/db/download` routes through `VITE_API_URL`, not raw Solr endpoints. These variables configure the standalone app; embedded hosts should pass equivalent values as `PredictionViewer` props.
 
 ## Solr field conventions (predictions collection)
 

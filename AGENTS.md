@@ -42,7 +42,7 @@
 ## URL And Data Contracts
 
 - Standalone URL params are read in `src/App.jsx`: repeatable `item`, repeatable `compound`, `subject_field`, repeatable `ssbd`, repeatable `endpoint`, repeatable `model`, `data_source`, `type`, and `back`.
-- `VITE_API_URL`, `VITE_PREDICTIONS_CORE`, `VITE_CHEMICALS_CORE`, `VITE_SUBJECT_FIELD`, `VITE_HSDS_URL`, and `VITE_HSDS_DOMAIN` are consumed by `ViewerConfig` or HSDS link code.
+- `VITE_API_URL`, `VITE_PREDICTIONS_CORE`, `VITE_CHEMICALS_CORE`, `VITE_SUBJECT_FIELD`, `VITE_HSDS_URL`, and `VITE_HSDS_DOMAIN` are read only by the standalone app shell in `src/App.jsx`; reusable library code must receive config through props/context, not `import.meta.env`.
 - Prediction docs are wide records: `attr_method` lists methods, and method fields use names like `{METHOD}_pred_d`, `{METHOD}_lower90_d`, `{METHOD}_upper90_d`, `{METHOD}_covered90_b`, `{METHOD}_set90_ss`, and `{METHOD}_set_size90_i`.
 - Model metadata is optional and loaded with `extra=model`; when absent, the UI falls back to static labels, method keys, and `guidance_s`/software fields.
 

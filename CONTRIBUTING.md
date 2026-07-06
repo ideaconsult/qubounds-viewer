@@ -77,6 +77,8 @@ import "@ideaconsult/qubounds-viewer/style.css";
 
 The reusable component is `PredictionViewer`. It accepts prediction item ids, subject compound ids, filters, backend configuration, auth token, and display options as props. Standalone URL parsing belongs in `src/App.jsx`; do not add URL parsing requirements to the reusable component.
 
+Standalone Vite environment variables also belong in `src/App.jsx`. Reusable library code should receive backend, collection, subject-field, and HSDS configuration through props/context rather than reading `import.meta.env`.
+
 Keep React and ReactDOM as peer dependencies. The library build currently bundles Recharts and emits `dist/qubounds-viewer.js` plus `dist/style.css`.
 
 ## Auth And Backend Expectations

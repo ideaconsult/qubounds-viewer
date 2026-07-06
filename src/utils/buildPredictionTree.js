@@ -1,6 +1,7 @@
 import { groupPredictions, parseMethodPredictions } from './modelRegistry'
 
-const ENV = import.meta.env || {}
+const DEFAULT_HSDS_URL = 'https://hsds.adma.ai'
+const DEFAULT_HSDS_DOMAIN = '/qubounds'
 
 // Build the nested prediction tree ready for rendering
 // compounds: array of { id, text, ... } (API response shape)
@@ -8,11 +9,11 @@ const ENV = import.meta.env || {}
 // registry: optional Map<method_s, modelDoc> of per-method metadata (units,
 //           endpoint label, task, classes, calibration nxs). Absent ⇒ fall back
 //           to method keys, guidance_s platform, no units.
-// hsds: optional { url, domain } for the h5web calibration link (else env defaults)
+// hsds: optional { url, domain } for the h5web calibration link
 // Returns: { [ssbd]: { [endpoint]: [ modelEntry ] } }
 export function buildPredictionTree(compounds, docs, registry, hsds) {
-  const hsdsBase = hsds?.url || ENV.VITE_HSDS_URL || 'https://hsds.adma.ai'
-  const hsdsDomain = hsds?.domain || ENV.VITE_HSDS_DOMAIN || '/qubounds'
+  const hsdsBase = hsds?.url || DEFAULT_HSDS_URL
+  const hsdsDomain = hsds?.domain || DEFAULT_HSDS_DOMAIN
   const buildHsdsUrl = (method) => `${hsdsBase}/?file=${hsdsDomain}/${method}.nxs`
   const buildHsdsUrlFromNxs = (nxs) => `${hsdsBase}/?file=${nxs}`
   if (!docs?.length || !compounds?.length) return {}
