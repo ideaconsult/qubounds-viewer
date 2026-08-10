@@ -1,6 +1,6 @@
 {
   "name": "@ideaconsult/qubounds-viewer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packageManager": "pnpm@11.10.0",
   "description": "Embeddable React viewer for conformal prediction intervals (qu-bounds).",
   "license": "Apache-2.0",

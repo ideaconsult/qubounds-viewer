@@ -55,7 +55,7 @@ Token receipt priority order (`src/context/AuthContext.jsx`):
 2. `sessionStorage` — from a prior navigation in the same tab
 3. `window.postMessage` — if embedded as an iframe, parent posts `{ type: 'keycloak_token', token: '...' }`
 
-If no token is present, **the app renders normally**. Public backend resources should work without auth, while protected image/data requests degrade gracefully.
+If no token is present, **the app renders normally**. Public backend resources should work without auth, while protected data requests degrade gracefully. Structure thumbnails use public URLs and never receive the token.
 
 ```jsx
 const token = readFromUrlOrSession()  // never call keycloak.init()
@@ -116,7 +116,7 @@ Use local  FastAPI running at http://127.0.0.1:8000/docs
 
 ### Structure depiction
 
-Structure thumbnails use `/db/download?what=thumbnail&extra=chemical&data_source={chemicalsCore}`. Token is appended only when available.
+Structure thumbnails use `/db/download?what=thumbnail&extra=chemical&data_source={chemicalsCore}` without an access token in the URL.
 
 ### HSDS / h5web links
 

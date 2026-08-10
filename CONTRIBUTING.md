@@ -221,9 +221,10 @@ Keep React and ReactDOM as peer dependencies. The library build currently bundle
 ## Auth And Backend Expectations
 
 - The viewer must never initiate Keycloak login or redirect flow.
-- Embedded hosts pass a token prop when authenticated.
+- Embedded hosts pass a token prop when authenticated data requests require it.
 - Standalone mode passively reads `?token=`, `sessionStorage`, or `postMessage`.
 - The UI should still render without a token; protected resources should degrade gracefully.
+- Thumbnail requests use public URLs and must never include access tokens.
 - Data access goes through backend `/db/query` and `/db/download` routes rather than raw Solr endpoints.
 
 ## Publishing

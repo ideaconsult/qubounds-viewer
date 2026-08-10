@@ -128,9 +128,8 @@ export function useModelRegistry() {
 
 // Structure thumbnail for a subject (the chemical the predictions are about),
 // built generically against the chemicals collection via the image download.
-// Returns a builder bound to the active config + token.
+// Returns a builder bound to the active config.
 export function useStructureUrl() {
-  const { token } = useAuth()
   const { apiBase, chemicalsCore } = useViewerConfig()
   return useCallback((compound) => {
     if (compound?.imageLink) return compound.imageLink
@@ -142,7 +141,6 @@ export function useStructureUrl() {
       extra: 'chemical',
       data_source: chemicalsCore
     })
-    if (token) params.append('token', token)
     return `${apiBase}/db/download?${params}`
-  }, [token, apiBase, chemicalsCore])
+  }, [apiBase, chemicalsCore])
 }

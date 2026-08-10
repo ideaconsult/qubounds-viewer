@@ -42,8 +42,8 @@
 ## Auth And Backend Contract
 
 - Do not add Keycloak login, redirect, or `keycloak.init()` behavior. Auth is passive.
-- Embedded hosts pass `token`; standalone mode reads `?token=`, then `sessionStorage`, then `postMessage` with `{ type: 'keycloak_token', token }`.
-- The viewer must render without a token; public data should still work and protected image/data requests should degrade gracefully.
+- Embedded hosts pass `token` for authenticated data requests; standalone mode reads `?token=`, then `sessionStorage`, then `postMessage` with `{ type: 'keycloak_token', token }`.
+- The viewer must render without a token; public data should still work and protected data requests should degrade gracefully. Thumbnail URLs must never include access tokens.
 - Data calls go through the ramanchada/nambit backend routes, not raw Solr: `/db/query` resolves subjects to item ids, `/db/download?what=json` fetches prediction/model docs, and `/db/download?what=thumbnail` fetches structures.
 
 ## URL And Data Contracts
