@@ -189,13 +189,13 @@ checks the exact tarball contents a consumer would install:
 ```sh
 # in qubounds-viewer
 pnpm build:lib
-pnpm pack --pack-destination /tmp/viewer-packs
+pnpm pack --out /tmp/viewer-packs/qubounds-viewer.tgz
 ```
 
 Then, in a host app and preferably on a throwaway branch:
 
 ```sh
-pnpm add /tmp/viewer-packs/ideaconsult-qubounds-viewer-0.1.0.tgz
+pnpm add /tmp/viewer-packs/qubounds-viewer.tgz
 pnpm dev -- --force
 ```
 
