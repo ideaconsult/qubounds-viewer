@@ -21,7 +21,7 @@ import '@ideaconsult/qubounds-viewer/style.css'
 />
 ```
 
-Hosts own authentication and pass a bearer token with the `token` prop when protected resources are needed. The viewer never starts login or redirect flow.
+Hosts own authentication and pass a bearer token with the `token` prop when protected data requests require it. The viewer never starts login or redirect flow, and it never places the token in thumbnail URLs.
 
 ## Standalone App
 
